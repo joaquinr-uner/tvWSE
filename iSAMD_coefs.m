@@ -1,4 +1,5 @@
 function vh = iSAMD_coefs(v,vnv,D,N,flag)
+% Constructs the coefficient vector to be used in the iSAMD algorithm
 vh = zeros(1,2*sum(vnv));
 vgam = v(end-D+1:end)./v(end-2*D+1:end-D);
 for i=2:D
