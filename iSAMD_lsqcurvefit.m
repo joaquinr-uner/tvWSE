@@ -1,4 +1,4 @@
-function [x, v_e] = iSAMD_lsqcurvefit(f,A,phi,D,vnv,vh,mInterp,lb,ub,options)
+function [x, v_e,exitflag] = iSAMD_lsqcurvefit(f,A,phi,D,vnv,vh,mInterp,lb,ub,options)
 v0 = vh;
 X = [A;phi];
 N = length(f);
@@ -6,7 +6,7 @@ modelfun = @(v,X)(regresion_reform(v,X,N,D,vnv,mInterp));
 
 warning('off')
 %v_e = nlinfit([A;phi],f,modelfun,v0,options);
-v_e = lsqcurvefit(modelfun,v0,[A;phi],f,lb,ub,options);
+[v_e,~,~,exitflag] = lsqcurvefit(modelfun,v0,[A;phi],f,lb,ub,options);
 warning('on')
 
 
