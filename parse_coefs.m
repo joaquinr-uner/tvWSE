@@ -1,4 +1,4 @@
-function [ti,alp,gam,e] = parse_coefs2(N,v,D,vnv,t_corr)
+function [ti,alp,gam,e] = parse_coefs(N,v,D,vnv,t_corr)
 ti = cell(1,D-1);
 alp = cell(1,D-1);
 gam = zeros(1,D-1);
