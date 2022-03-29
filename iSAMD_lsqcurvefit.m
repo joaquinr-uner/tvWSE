@@ -1,4 +1,9 @@
 function [x, v_e,exitflag] = iSAMD_lsqcurvefit(f,A,phi,D,vnv,vh,mInterp,lb,ub,options)
+
+if nargin<10
+    options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*2*12*9);
+end
+
 v0 = vh;
 X = [A;phi];
 N = length(f);
