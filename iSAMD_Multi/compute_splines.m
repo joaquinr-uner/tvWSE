@@ -3,7 +3,7 @@ function s = compute_splines(x,y,xq)
     N = length(xq);
     s = zeros(M,N);
     for i=1:M
-       si = spline(x(i,:),y(i,:),xq);
+       si = spline(x{i},y{i},xq);
        s(i,:) = si;
     end
 end
