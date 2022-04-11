@@ -23,6 +23,7 @@ I = length(D);
 A = X(1,:);
 phi = X(2,:);
 s = A.*cos(2*pi*phi);
+
 for i=1:D-1
     v_l = v(2*(sum(vnv(1:i-1)))+1:2*sum(vnv(1:i)));
     t_l = v_l(1:vnv(i)-2);
