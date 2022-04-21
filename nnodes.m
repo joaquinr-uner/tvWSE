@@ -10,7 +10,7 @@ function vnv = nnodes(F,sF,c,del,D,nv,f)
                 Sh = abs(fft(A)).^2;
                 Sh(1) = 0;
                 acum = cumsum(Sh(1:N/2))/sum(Sh(1:N/2));
-                indx = find(acum>0.7,1);
+                indx = find(acum>0.8,1);
                 vnvk(i-1) = ceil(2*f(indx))+1;
                 %vnvk(i-1) = ceil(3*f(indx));
             end
