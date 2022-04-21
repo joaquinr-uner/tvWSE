@@ -5,12 +5,12 @@ tn = cell(1,D-1);
 for i=2:D
     if flag == 1
         A_l = v(i)*ones(1,vnv(i-1));
-        gam_l = v(i)/v(D+i);
+        gam_l = v(D+i)/v(i);
     else
         ah = v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
         vlr = v(end-2*D+1:end);
         A_l = vlr(i)*v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
-        gam_l = vlr(i+D)/vlr(i);
+        gam_l = vlr(D+i)/vlr(i);
     end
     inter = floor(linspace(1,N,vnv(i-1)));
     tn{i-1} = inter;
