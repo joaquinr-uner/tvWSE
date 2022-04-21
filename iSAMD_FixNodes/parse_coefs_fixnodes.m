@@ -1,4 +1,4 @@
-function [t_ih,alp,gam,e] = parse_coefs_fixnodes(v,D,vnv,N)
+function [alp,gam,e] = parse_coefs_fixnodes(v,D,vnv,N)
     alp = cell(1,D-1);
     t_ih = cell(1,D-1);
     gam = zeros(1,D-1);
