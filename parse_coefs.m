@@ -14,7 +14,7 @@ for i=1:D-1
     nv = vnv(i);
     vi = v(2*(sum(vnv(1:i-1)))+1:2*sum(vnv(1:i)));
     t_l = vi(1:vnv(i)-2);
-    [t_l, indx_l] = sort(round(t_l));
+    [t_l, indx_l] = sort(t_l);
     %t_l = round(t_l);
     if t_corr
         if t_l(1) <= 1
