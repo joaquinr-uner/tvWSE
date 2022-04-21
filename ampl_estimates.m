@@ -1,4 +1,4 @@
-function [a, Ah] = ampl_estimates(F,sF,c,del,D,vnv)
+function [a, Ah] = ampl_estimates(F,sF,c,del,D,vnv,v)
     [~,N] = size(F);
     K = length(D);
     Ah = zeros(sum(D)-K,N);
@@ -11,6 +11,7 @@ function [a, Ah] = ampl_estimates(F,sF,c,del,D,vnv)
             inter = round(linspace(1,N,nv));
             idxs = sum(vnv(1:idx_n-1))+1:sum(vnv(1:idx_n));
             a(idxs)=sh(inter);
+            a = a/v(1);
             Ah(i-1,:) = A;
         end
     end
