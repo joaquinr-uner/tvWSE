@@ -30,7 +30,8 @@ for i=1:D-1
             end
         end
     end
-    ti{i} = [1 t_l N];
+    ti{i} = [1 N*t_l N];
+    %ti{i} = [1 t_l N];
     %ti{i} = t_l;
     aux = vi(nv-1:2*nv-2);
     aux_in = aux(2:end-1);

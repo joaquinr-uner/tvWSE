@@ -1,9 +1,9 @@
-function vh = iSAMD_coefs(v,vnv,D,N,flag,t_init)
+function vh = iSAMD_coefs(v,vnv,D,flag,t_init)
 % Constructs the coefficient vector to be used in the iSAMD algorithm
-if nargin<5
+if nargin<4
     flag = 1;
 else
-    if nargin<6
+    if nargin<5
         t_init = 0;
     end
 end
@@ -21,7 +21,8 @@ for i=2:D
     if iscell(t_init)
         inter = t_init{i-1};
     else
-        inter = floor(linspace(1,N,vnv(i-1)));
+        %inter = floor(linspace(1,N,vnv(i-1)));
+        inter = linspace(0,1,vnv(i-1));
     end
     t_l = inter(2:end-1);
     aux = [t_l,A_l,gam_l,i];

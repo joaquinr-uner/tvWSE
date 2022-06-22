@@ -1,7 +1,7 @@
 function [x, v_e,exitflag] = iSAMD_lsqcurvefit(f,A,phi,D,vnv,vh,mInterp,lb,ub,options)
 
 if nargin<10
-    options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*2*12*9);
+    options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*2*sum(vnv),'Display','off');
 end
 
 v0 = vh;
@@ -28,12 +28,10 @@ for i=1:D-1
     v_l = v(2*(sum(vnv(1:i-1)))+1:2*sum(vnv(1:i)));
     t_l = v_l(1:vnv(i)-2);
     A_l = v_l(vnv(i)-1:2*vnv(i)-2);
-    %amp = ppval(pwch([1 t_l N],A_l,zeros(size(A_l))),1:length(s));
-    amp = interp1([1, t_l, N],A_l,1:N,mInterp);
+    %amp = interp1([1, t_l, N],A_l,1:N,mInterp);
+    amp = interp1([0, t_l, 1],A_l,linspace(0,1,N),mInterp);
     e = v_l(end);
     gam = v_l(end-1);
     s = s + amp.*(cos(2*pi*e*phi)+ gam*sin(2*pi*e*phi));
-    %v(2*(sum(vnv(1:i-1)))+1:2*sum(vnv(1:i))) = [t_l, A_l,gam,e];
 end
-%s = A.*s;
 end
