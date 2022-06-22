@@ -11,7 +11,7 @@ vh = zeros(1,2*sum(vnv));
 vgam = v(end-D+1:end)./v(end-2*D+1:end-D);
 for i=2:D
     if flag == 1
-        A_l = v(i)*ones(1,vnv(i-1));
+        A_l = v(i)*ones(vnv(i-1),1);
         gam_l = vgam(i);
     else
         A_l = v(end-2*D+i)*v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
