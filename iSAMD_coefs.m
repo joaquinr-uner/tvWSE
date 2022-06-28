@@ -14,7 +14,7 @@ for i=2:D
         A_l = v(i)*ones(1,vnv(i-1));
         gam_l = vgam(i);
     else
-        A_l = v(end-2*D+i)*v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
+        A_l = v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
         %A_l = v(sum(vnv(1:i-2))+1:sum(vnv(1:i-1)));
         gam_l = vgam(i);
     end
