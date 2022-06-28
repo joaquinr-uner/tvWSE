@@ -23,7 +23,7 @@ for i=1:D-1
         end
     end
     ti{i} = [1 sort(t_l) N];
-    ti{i}
+    ti{i};
     %ti{i} = t_l;
     alp{i} = A(ti{i}).*vi(nv-1:2*nv-2);
     gam(i) = vi(2*nv-1);
