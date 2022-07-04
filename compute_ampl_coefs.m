@@ -1,4 +1,4 @@
-function [a, b, Al, B, alp] = compute_ampl_coefs(ti_h,Ql,gamh,N,D,mInterp,nmn,B1)
+function [a, b, Al, alp] = compute_ampl_coefs(ti_h,Ql,gamh,N,D,mInterp,nmn,B1)
 
 if nargin<7
     mnm = 1;
@@ -18,11 +18,11 @@ for i=1:D-1
     else
         alpi = Ql{i};
     end
-    alp{i} = alpi;
     Al(i,:) = interp1(ti,alpi,1:N,mInterp);
     a(i+1) = sum(Al(i,:),2)/N;
+    Al(i,:) = Al(i,:)/a(i+1);
     b(i+1) = gamh(i).*a(i+1);
-    B{i} = alpi/a(i+1);
+    alp{i} = alpi/a(i+1);
 end
 end
 
