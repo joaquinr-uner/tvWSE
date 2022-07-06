@@ -1,9 +1,10 @@
-function [a, b, Al, alp] = compute_ampl_coefs(ti_h,Ql,gamh,N,D,mInterp,nmn,B1)
+function [a, b, Al, alp] = compute_ampl_coefs(ti_h,Ql,gamh,mInterp,nmn,B1)
 
 if nargin<7
     mnm = 1;
 end
-
+D = length(gamh)+1;
+N = length(B1);
 B = cell(1,D-1);
 alp = cell(1,D-1);
 Al = zeros(D-1,N);
