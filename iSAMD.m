@@ -9,7 +9,7 @@ if nargin<12 && method == 0
     options.MaxIter = 3000;
 else
     if nargin<12 && method == 1
-        options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*2*sum(vnv),'Display','off');
+        options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*length(vh),'Display','off');
     end
 end
 
@@ -62,7 +62,7 @@ phi = X(2,:);
 s = A.*cos(2*pi*phi);
 N = length(A);
 for i=1:D-1
-    v_l = v(2*sum(vnv(1:i-1))+4*(i-1)+1:2*sum(vnv(1:i))+4*i);
+    v_l = v(2*(sum(vnv(1:i-1))+2*(i-1))+1:2*(sum(vnv(1:i))+2*i));
     t_l = v_l(1:vnv(i));
     A_l = v_l(vnv(i)+1:2*vnv(i)+2);
     %amp = interp1([1, t_l, N],A_l,1:N,mInterp);
