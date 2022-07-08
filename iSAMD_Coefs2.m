@@ -36,6 +36,6 @@ for i=2:D
     end
     t_l = inter;
     aux = [t_l,A_l,gam_l,i];
-    vh(2*sum(vnv(1:i-2))+4*(i-2)+1:2*sum(vnv(1:i-1))+4*(i-1)) = aux;
+    vh(2*(sum(vnv(1:i-2))+2*(i-2))+1:2*(sum(vnv(1:i-1))+2*(i-1))) = aux;
 end
 end
