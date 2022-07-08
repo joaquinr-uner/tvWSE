@@ -1,4 +1,11 @@
-function [vnv,alp] = nnodes(F,sF,c,del,D,nv,fs)
+function [vnv,alp] = nnodes(nv,D,F,sF,c,del,fs,thr)
+if nargin < 3
+    K = length(D);
+    vnv = nv*ones(sum(D)-K,1);
+else
+    if nargin < 8
+        thr = 0.9;
+    end
     [~,N] = size(F);
     K = length(D);
     if nv == 0
@@ -7,14 +14,16 @@ function [vnv,alp] = nnodes(F,sF,c,del,D,nv,fs)
         for k=1:K
             vnvk = zeros(D(k)-1,1);
             for i=2:D(k)
-                [Al,~] = extract_fundamentals(F,sF,i*c(k,:),del);
+                ck = ridge_correct(i*c(k,:),F,del,1);
+                [Al,~] = extract_fundamentals(F,sF,ck,del);
+                %[Al,~] = extract_fundamentals(F,sF,i*c(k,:),del);
                 %A = Al;
-                A = Al(0.1*N:0.9*N);
+                A = Al(0.1*N+1:0.9*N);
                 Sh = abs(fft(A)).^2;
                 Sh = Sh(1:floor(end/2));
                 Sh(1) = 0;
                 acum = cumsum(Sh)/sum(Sh);
-                indx = find(acum>0.9,1);
+                indx = find(acum>thr,1);
                 Nc = length(A);
                 f = 0:fs/Nc:fs/2-fs/Nc;
                 %f = 0:fs/(0.8*N):fs/2-fs/(0.8*N);
@@ -26,7 +35,6 @@ function [vnv,alp] = nnodes(F,sF,c,del,D,nv,fs)
             vnv(sum(D(1:k-1)-k+1)+1:sum(D(1:k))-k) = vnvk;
         end
         
-    else
-            vnv = nv*ones(sum(D)-K,1);
     end
+end
 end
