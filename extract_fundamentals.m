@@ -10,7 +10,11 @@ for k=1:K
     for i=1:length(y)
         binf = max([1,c(k,i)-b]);
         bup = min([M,c(k,i)+b]);
+        Binf(:,i) = [binf:bup]';
         y(i) = 1/max(sF)*sum(F(binf:bup,i)); 
+        %figure(1)
+        %plot(abs(F(binf:bup,i)))
+        %pause(0.005)
     end
 
 A(k,:) = abs(y);
