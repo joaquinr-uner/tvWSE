@@ -1,14 +1,14 @@
-function [x, v_e,exitflag] = iSAMD(f,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,options)
+function [x, v_e,exitflag] = iSAMD(f,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,outn,options)
 if nargin<11
     ext = 0;
 end
 
-if nargin<12 && method == 0
+if nargin<13 && method == 0
     options = statset;
     options.RobustWgtFun = 'cauchy';
     options.MaxIter = 3000;
 else
-    if nargin<12 && method == 1
+    if nargin<13 && method == 1
         options = optimoptions('lsqcurvefit','Algorithm','levenberg-marquardt','MaxFunctionEvaluations',400*length(vh),'Display','off');
     end
 end
@@ -16,7 +16,7 @@ end
 v0 = vh;
 X = [A;phi];
 if ext == 1
-    modelfun = @(v,X)(regresion_ext(v,X,D,vnv,mInterp));
+    modelfun = @(v,X)(regresion_ext(v,X,D,vnv,mInterp,outn));
 else
     modelfun = @(v,X)(regresion_reform(v,X,D,vnv,mInterp));
 end
@@ -55,16 +55,19 @@ for i=1:D-1
 end
 end
 
-function s = regresion_ext(v,X,D,vnv,mInterp)
+function s = regresion_ext(v,X,D,vnv,mInterp,outn)
 I = length(D);
 A = X(1,:);
 phi = X(2,:);
 s = A.*cos(2*pi*phi);
 N = length(A);
 for i=1:D-1
-    v_l = v(2*(sum(vnv(1:i-1))+2*(i-1))+1:2*(sum(vnv(1:i))+2*i));
-    t_l = v_l(1:vnv(i));
-    A_l = v_l(vnv(i)+1:2*vnv(i)+2);
+    v_l = v(2*(sum(vnv(1:i-1))+2*outn*(i-1))+1:2*(sum(vnv(1:i))+2*outn*i));
+    t_l = v_l(1:vnv(i)+2*(outn-1));
+    %[t_l, indx_l] = sort(t_l);
+    A_l = v_l(vnv(i)+2*(outn-1)+1:end-2);
+    %aux_in = A_l(2:end-1);
+    %A_l(2:end-1) = aux_in(indx_l);
     %amp = interp1([1, t_l, N],A_l,1:N,mInterp);
     amp = interp1([0, t_l, 1],A_l,linspace(0,1,N),mInterp);
     e = v_l(end);
