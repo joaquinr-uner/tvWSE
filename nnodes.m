@@ -15,9 +15,9 @@ else
             vnvk = zeros(D(k)-1,1);
             for i=2:D(k)
                 ck = ridge_correct(i*c(k,:),F,del,1);
-                Al = extract_ridge(F,ck);
+                Al = extract_ridge(F,N,ck);
                 %[Al,~] = extract_fundamentals(F,sF,ck,del);
-                A = Al(0.1*N+1:0.9*N);
+                A = Al(round(0.1*N)+1:round(0.9*N));
                 Sh = abs(fft(A)).^2;
                 Sh = Sh(1:floor(end/2));
                 Sh(1) = 0;
