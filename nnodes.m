@@ -26,14 +26,18 @@ else
                 Nc = length(A);
                 f = 0:fs/Nc:fs/2-fs/Nc;
                 %f = 0:fs/(0.8*N):fs/2-fs/(0.8*N);
-                vnvk(i-1) = 2*ceil(f(indx))+1;
+                %vnvk(i-1) = 2*ceil(f(indx))+1;
+                vnvk(i-1) = 2*indx+1;
                 %vnvk(i-1) = ceil(3*f(indx));
                 alp(sum(D(1:k-1)-k+1)+i-1,:) = Al;
             end
             vnvk(vnvk<2) = 2;
             vnv(sum(D(1:k-1)-k+1)+1:sum(D(1:k))-k) = vnvk;
         end
-        
+
+
+    else
+        vnv = nv*ones(sum(D)-K,1);
     end
 end
 end
