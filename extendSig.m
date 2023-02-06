@@ -19,7 +19,7 @@ phi = phi(:);
 N = length(s);
 wrapphi = wrapTo2Pi(2*pi*phi);
 dwphi = diff(wrapphi);
-plocs = find(dwphi<-6);
+plocs = find(dwphi<-5);
 pw = diff(plocs);
 
 %[~,plocs] = findpeaks(wrapTo2Pi(2*pi*phi));
