@@ -32,6 +32,10 @@ if sum(ismember(msplt,'fw'))
     indfw = find(phi>phi(end)-c,1);
     Seas1 = round(median(pw(end-c+1:end)));
     estInd = (indfw:N)';
+    if length(estInd)<Seas1+c %Check if enough samples are used for estimation
+        estInd = N-Seas1-c:N;
+    end
+
     Mdlfw = regARIMA('D',0,'Seasonality',Seas1,'MALags',c,'SMALags',Seas1,'Intercept',0);
     Mdlfwest = estimate(Mdlfw,s(estInd),'X',estInd,'Display','off');
     spfw = forecast(Mdlfwest,Np,'X0',(estInd),'Y0',s(estInd),'XF',(N+1:N+Np)');
@@ -43,6 +47,9 @@ if sum(ismember(msplt,'bw'))
     Seas2 = round(median(pw(1:c)));
     sbk = flipud(s);
     estIndbk = (N-indbk+1:N)';
+    if length(estInd)<Seas1+c %Check if enough samples are used for estimation
+        estIndbk = N-Seas2-c:N;
+    end
 
     Mdlbk = regARIMA('D',0,'Seasonality',Seas2,'MALags',c,'SMALags',Seas2,'Intercept',0);
     Mdlbkest = estimate(Mdlbk,sbk(estIndbk),'X',estIndbk,'Display','off');
