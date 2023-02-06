@@ -47,7 +47,7 @@ if sum(ismember(msplt,'bw'))
     Seas2 = round(median(pw(1:c)));
     sbk = flipud(s);
     estIndbk = (N-indbk+1:N)';
-    if length(estIndbk)<Seas1+c %Check if enough samples are used for estimation
+    if length(estIndbk)<Seas2+c %Check if enough samples are used for estimation
         estIndbk = N-Seas2-c:N;
     end
 
