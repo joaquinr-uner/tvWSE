@@ -1,4 +1,4 @@
-function [ti,alp,gam,e] = parse_coefs2(N,v,D,nv,t_corr)
+function [ti,alp,gam,e] = parse_coefs2(N,v,D,nv,t_corr,outn)
 
 if length(nv) == 1
     vnv = nv*ones(1,D-1);

@@ -33,7 +33,7 @@ if sum(ismember(msplt,'fw'))
     Seas1 = round(median(pw(end-c+1:end)));
     estInd = (indfw:N)';
     if length(estInd)<Seas1+c %Check if enough samples are used for estimation
-        estInd = N-Seas1-c:N;
+        estInd = N-Seas1-c-1:N;
     end
 
     Mdlfw = regARIMA('D',0,'Seasonality',Seas1,'MALags',c,'SMALags',Seas1,'Intercept',0);
@@ -48,7 +48,7 @@ if sum(ismember(msplt,'bw'))
     sbk = flipud(s);
     estIndbk = (N-indbk+1:N)';
     if length(estIndbk)<Seas2+c %Check if enough samples are used for estimation
-        estIndbk = N-Seas2-c:N;
+        estIndbk = N-Seas2-c-1:N;
     end
 
     Mdlbk = regARIMA('D',0,'Seasonality',Seas2,'MALags',c,'SMALags',Seas2,'Intercept',0);

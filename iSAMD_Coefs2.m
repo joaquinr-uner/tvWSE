@@ -36,13 +36,17 @@ for i=2:D
         inter = t_init{i-1};
     else
         %inter = floor(linspace(1,N,vnv(i-1)));
-        ti = 0.5*(1-1/r_ext+1/Ne);
-        te = 1-0.5*(1-1/r_ext);
-        outni = linspace(0,ti,outn+1);
-        outne = linspace(te,1,outn+1);
-        t_in = linspace(ti,te,vnv(i-1));
-        inter = [outni(2:end-1) t_in outne(2:end-1)];
+        if outn>0
+            ti = 0.5*(1-1/r_ext+1/Ne);
+            te = 1-0.5*(1-1/r_ext);
+            outni = linspace(0,ti,outn+1);
+            outne = linspace(te,1,outn+1);
+            t_in = linspace(ti,te,vnv(i-1));
+            inter = [outni(2:end-1) t_in outne(2:end-1)];
         %inter = linspace(0,1,vnv(i-1));
+        else
+            inter = linspace(0,1,vnv(i-1));
+            inter = inter(2:end-1);
     end
     t_l = inter;
     aux = [t_l,A_l,gam_l,i];
