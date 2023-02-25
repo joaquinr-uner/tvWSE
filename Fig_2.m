@@ -115,7 +115,7 @@ tic;
 
 se_tvwse = B1e.*se_tvwse;
 
-t_isamd = toc;
+t_tvwse = toc;
 %% Posprocessing
 [ti,ql,gamh,eh] = parse_coefs(Next,v_ie,D,vnv,0);
 [a,~,Ale,alp] = compute_haf(ti,ql,gamh,'pchip',1,B1e);

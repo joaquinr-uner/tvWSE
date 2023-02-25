@@ -189,10 +189,10 @@ vh = Init_tvWSE(ven,vnv,D1,1,N,Next,0,1);
 
 method = 'pchip';
 
-fprintf('Computing iSAMD on extended signal using %s. Nro of coefs : %i \n',method,numel(vh))
+fprintf('Computing tvWSE on extended signal using %s. Nro of coefs : %i \n',method,numel(vh))
 
 tic;
-[s_tvwse_n,v_ie,eflag_isamd] = tvWSE(sen',ones(1,Next),phi_ext,D1,vnv,vh,method,lb,ub,1,1,1);
+[s_tvwse_n,v_ie,eflag_tvwse] = tvWSE(sen',ones(1,Next),phi_ext,D1,vnv,vh,method,lb,ub,1,1,1);
 t_tvwse = toc;
 
 se_tvwse = ve(1)*A_ext.*s_tvwse_n;
@@ -264,10 +264,10 @@ vh2 = Init_tvWSE(v2en,vnv2,r2_opt,1,N,Next,0,1);
 
 method = 'pchip';
 
-fprintf('Computing iSAMD on extended signal using %s. Nro of coefs : %i \n',method,numel(vh2))
+fprintf('Computing tvWSE on extended signal using %s. Nro of coefs : %i \n',method,numel(vh2))
 
 tic;
-[s2_tvwse_n,v2_ie,eflag2_isamd] = tvWSE(s2en',ones(1,Next),phi2e,r2_opt,vnv2,vh2,method,lb2,ub2,1,1,1);
+[s2_tvwse_n,v2_ie,eflag2_tvwse] = tvWSE(s2en',ones(1,Next),phi2e,r2_opt,vnv2,vh2,method,lb2,ub2,1,1,1);
 t2_tvwse = toc
 
 s2e_tvwse = v2e(1)*A2e.*s2_tvwse_n;
@@ -293,7 +293,7 @@ plot(t_ecg(ind_e)-t_ecg(ind_e(1)),ecg2(ind_e),'r--')
 hold on
 plot(t(ind)-t(ind(1)),s2_tvwse(ind),'g-','LineWidth',1.5);
 hold off
-text(0.05,1.2*yl(2),'iSAMD')
+text(0.05,1.2*yl(2),'tvWSE')
 ylim(yl)
 xlim([t(1) t(length(ind))])
 
@@ -326,9 +326,9 @@ xlim([t(1) t(length(ind))])
 h32 = subplot(5,1,2);
 plot(t(ind)-t(ind(1)),s(ind),'k')
 hold on
-plot(t(ind)-t(ind(1)),sc_isamd(ind),'g-','LineWidth',1.5);
+plot(t(ind)-t(ind(1)),sc_tvwse(ind),'g-','LineWidth',1.5);
 hold off
-text(0.05,1.2*yl(2),'iSAMD')
+text(0.05,1.2*yl(2),'tvWSE')
 ylim(yl)
 xlim([t(1) t(length(ind))])
 
@@ -357,9 +357,9 @@ P = floor(P);
 m = interp1(phi2(ind),1:N,t_m,'spline');
 
 y = interp1(1:N,s2_tvwse(ind)./A2(ind),m,'spline');
-waves_iSAMD = zeros(P,T); 
+waves_tvwse = zeros(P,T); 
 for i = 1:P
-    waves_iSAMD(i,:) = interp1(t_m,y,t_m(1)+i-1+[0:1/(T):1-1/(T)],'spline');
+    waves_tvwse(i,:) = interp1(t_m,y,t_m(1)+i-1+[0:1/(T):1-1/(T)],'spline');
 end
 
 t_m = linspace(min(phi2_est(ind)),max(phi2_est(ind)),N);
@@ -417,7 +417,7 @@ set(gca,'FontSize',fnts)
 
 subplot(4,9,18)
 for i=1:P
-plot(linspace(-0.5,0.5,length(WSF2)),waves_iSAMD(i,:)); hold on
+plot(linspace(-0.5,0.5,length(WSF2)),waves_tvwse(i,:)); hold on
 end
 text(-0.35,4,{'Cardiac','Cycles'},'FontWeight','bold')
 hold off

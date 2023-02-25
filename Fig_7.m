@@ -143,7 +143,7 @@ plot(te,fe(c1e-be),'b--')
 plot(te,fe(c1e+be),'b--')
 hold off
 
-%% iSAMD
+%% tvWSE
 r_opt = D1;
 Cext = makeC(A_ext,phi_ext,r_opt);
 
@@ -169,11 +169,11 @@ vh = Init_tvWSE(ven,vnv,r_opt,1,N,Next,0,1);
 
 method = 'pchip';
 
-fprintf('Computing iSAMD on extended signal using %s. Nro of coefs : %i \n',method,numel(vh))
+fprintf('Computing tvWSE on extended signal using %s. Nro of coefs : %i \n',method,numel(vh))
 
 tic;
-[s_tvwse_n,v_ie,eflag_isamd] = tvWSE(sen',ones(1,Next),phi_ext,r_opt,vnv,vh,method,lb,ub,1,1,1);
-t_isamd = toc;
+[s_tvwse_n,v_ie,eflag_tvwse] = tvWSE(sen',ones(1,Next),phi_ext,r_opt,vnv,vh,method,lb,ub,1,1,1);
+t_tvwse = toc;
 
 se_tvwse = ve(1)*A_ext'.*s_tvwse_n';
 s_tvwse = se_tvwse(Np+1:length(x)+Np);
@@ -184,7 +184,7 @@ hold on
 plot(t,s_samd)
 plot(t,s_tvwse)
 hold off
-legend('x','SAMD','iSAMD')
+legend('x','SAMD','tvWSE')
 
 %% 
 ind = 8*fs+1:28*fs;
