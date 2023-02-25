@@ -1,4 +1,4 @@
-function [x, v_e,exitflag] = iSAMD(f,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,outn,options)
+function [x, v_e,exitflag] = tvWSE(f,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,outn,options)
 if nargin<11
     ext = 0;
 end
@@ -45,13 +45,10 @@ for i=1:D-1
     v_l = v(2*(sum(vnv(1:i-1)))+1:2*sum(vnv(1:i)));
     t_l = v_l(1:vnv(i)-2);
     A_l = v_l(vnv(i)-1:2*vnv(i)-2);
-    %amp = interp1([1, t_l, N],A_l,1:N,mInterp);
     amp = interp1([0, t_l, 1],A_l,linspace(0,1,N),mInterp);
     e = v_l(end);
     gam = v_l(end-1);
     s = s + amp.*(cos(2*pi*e*phi)+ gam*sin(2*pi*e*phi));
-    %subplot(2,1,i)
-    %plot(amp)
 end
 end
 
@@ -64,18 +61,10 @@ N = length(A);
 for i=1:D-1
     v_l = v(2*(sum(vnv(1:i-1))+2*outn*(i-1))+1:2*(sum(vnv(1:i))+2*outn*i));
     t_l = v_l(1:vnv(i)+2*(outn-1));
-    %[t_l, indx_l] = sort(t_l);
     A_l = v_l(vnv(i)+2*(outn-1)+1:end-2);
-    %aux_in = A_l(2:end-1);
-    %A_l(2:end-1) = aux_in(indx_l);
-    %amp = interp1([1, t_l, N],A_l,1:N,mInterp);
     amp = interp1([0, t_l, 1],A_l,linspace(0,1,N),mInterp);
     e = v_l(end);
     gam = v_l(end-1);
     s = s + amp.*(cos(2*pi*e*phi)+ gam*sin(2*pi*e*phi));
-    %subplot(2,1,i)
-    %plot(amp)
-    %title(num2str(e))
-    %pause(0.1)
 end
 end
