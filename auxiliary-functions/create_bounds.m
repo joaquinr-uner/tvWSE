@@ -1,4 +1,15 @@
-function [lb,ub] = create_bounds3(vnv,vh,D,N,outn)
+function [lb,ub] = create_bounds(vnv,vh,D,N,outn)
+%% Compute lower and upper bounds for the curve estimation algorithm.
+% Inputs: 
+%	  vnv: (D-1) integer vector with number of nodes for each harmonic component.
+%	  vh: Initial coefficient vectors for tvWSE algorithm.
+%	  D: number of harmonics of x.
+% 	  N: length of signal.
+% 	  outn: Number of outer nodes.
+% Outputs: 
+%	  lb: lower bound vector. 
+%	  up: upper bound vector.
+
 ub = zeros(1,2*sum(vnv)+4*outn*(D-1));
 lb = zeros(1,2*sum(vnv)+4*outn*(D-1));
 for i=1:D-1

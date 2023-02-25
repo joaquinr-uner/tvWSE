@@ -1,6 +1,19 @@
-function vh = iSAMD_Coefs2(v,vnv,D,flag,N,Ne,t_init,outn)
-% Constructs the coefficient vector to be used in the iSAMD algorithm
-% with the extended signal
+function vh = Init_tvWSE(v,vnv,D,flag,N,Ne,t_init,outn)
+% Constructs the initial coefficient vector to be used in the adaptive 
+% time-varying wave-shape extraction (tvWSE) algorithm. See [1] for details.
+% Inputs:
+%	  - v: WSF linear regression coefficients for signal x. 
+% 	  - vnv: (D-1) integer vector with number of nodes for each harmonic component.
+%	  - D: number of harmonics of x.
+%	  - flag: 
+%	  - N: length of signal.
+%	  - Ne: length of the extended signal.
+%	  - t_init: cell structure with initial node locations. If equal to 0, 
+%		    node locations are computed normally.
+%	  - outn: Number of outer nodes.
+% Outputs:
+%	  - vh: Initial coefficient vectors for tvWSE algorithm.
+
 if nargin<4
     flag = 1;
 end

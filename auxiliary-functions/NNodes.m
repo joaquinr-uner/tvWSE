@@ -1,4 +1,18 @@
 function [vnv,alp] = nnodes(nv,D,F,sF,c,del,fs,thr)
+%% Automatic node number estimation based on harmonic amplitude bandwidth.
+% Inputs: 
+% 	  - nv: Number of nodes. If nv == 0, adaptive number of nodes for each harmonic is computed.
+%		Otherwise, number of nodes is set to nv for all harmonic.
+%	  - D: Number of Harmonic Components.
+%	  - F: Short-Time Fourier Transform of the signal x.
+%	  - sF: Sum of filters of the STFT (used for vertical reconstruction).
+%	  - c: fundamental ridge of the STFT.
+%	  - fs: sampling frequency.
+%	  - thr: threshold of the cumulative spectral energy.
+% Outputs:
+%	  - vnv: (D-1) length vector with the number of nodes for each harmonic.
+%	  - alp: Rough estimates of the harmonic amplitudes obtained from F.
+
 if nargin < 3
     K = length(D);
     vnv = nv*ones(sum(D)-K,1);

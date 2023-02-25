@@ -1,4 +1,18 @@
 function [ti,alp,gam,e] = parse_coefs2(N,v,D,nv,t_corr,outn)
+%% Parse Optimal Coefficient vector of the adaptive
+% time-varying wave-shape extraction (tvWSE) algorithm.
+% Inputs:
+%	  - N: length of signal.
+%	  - v: Optimal Coefficient Vector from the tvWSE algorithm.
+%	  - D: number of harmonics of x.
+%	  - nv: (D-1) integer vector with number of nodes for each harmonic component.
+%	  - t_corr: 
+%	  - outn: Number of outer nodes.
+% Outputs:
+%	  - ti: cell structure with node locations for optimal nodes.
+%	  - alp: cell structure with node amplitudes for optimal nodes.
+%	  - gam: optimal phase-shift coefficients gamma_l.
+%	  - e: optimal non-integer phase coefficients e_l.
 
 if length(nv) == 1
     vnv = nv*ones(1,D-1);
