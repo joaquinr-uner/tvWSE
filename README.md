@@ -1,2 +1,2 @@
-# iSAMD
-Implementation of the improved Shape-Adaptive Mode Descomposition (iSAMD) algorithm for analysis and decomposition of complicated oscillatory signals with time-varying waveshape
+# Time-Varying Wave-Shape Extraction (tvWSE) Algorithm.
+Implementation of the adaptive time-varying wave-shape extraction (tvWSE) algorithm for analysis and decomposition of oscillatory signals with time-varying wave-shape
