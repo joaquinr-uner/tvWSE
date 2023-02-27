@@ -1,3 +1,8 @@
+% This experiment implements that synthetic signal segmentation experiment
+% detailed in Sec. 4.4 of "Fully Adaptive Time-Varying
+% Wave-Shape Model: Applications in Biomedical Signal Processing".
+addpath(genpath('/time-frequency-analysis'))
+addpath(genpath('/auxiliary-functions'))
 
 mInterp = 'pchip';
 
@@ -80,7 +85,7 @@ for m=1:length(SNRs)
         r_max = floor(0.5*N/max(c));
 
 
-        [A_est, phi_est] = extract_fundamentals(F,sF,c,b);
+        [A_est, phi_est] = extract_harmonics(F,sF,c,b,b,1);
 
         r_opt = order_opt(s',r_max,A_est,phi_est,Crit,Cparams,F);
 
@@ -96,7 +101,7 @@ for m=1:length(SNRs)
         nv = 0;
 
 
-        vnv = nnodes(nv,r_opt,Fn,sFn,c,b,fs,0.9);
+        vnv = NNodes(nv,r_opt,Fn,sFn,c,b,fs,0.9);
 
 
         cycls = 3;
@@ -109,7 +114,7 @@ for m=1:length(SNRs)
         [Fext,sFext] = STFT_Gauss(s_ext,Next,sigma,fmax);
         cext = ridge_ext(Fext,0.1,0.1,10,10);
         be = round(3/pi*sqrt(sigma/2)*Next);
-        [A_ext,phi_ext] = extract_fundamentals(Fext,sFext,cext,be);
+        [A_ext,phi_ext] = extract_harmonics(Fext,sFext,cext,be,be,1);
 
         C = construct_dct(A_ext,phi_ext,r_opt);
         ve = ((C'*C)\C')*s_ext;

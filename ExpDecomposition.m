@@ -1,4 +1,10 @@
-addpath(genpath('/home/jruiz/'))
+% This experiment implements that synthetic signal decomposition experiment
+% detailed in Sec. 4.3 of "Fully Adaptive Time-Varying
+% Wave-Shape Model: Applications in Biomedical Signal Processing".
+
+addpath(genpath('/time-frequency-analysis'))
+addpath(genpath('/auxiliary-functions'))
+
 fs = 2000;
 N = 2000;
 fmax = 0.5;
@@ -15,7 +21,7 @@ phi2 = 100*t + 7*t.^2;
 c1 = round(diff(phi1)*fs)+1;
 c2 = round(diff(phi2)*fs)+1;
 c1 = [c1(1), c1];
-c2 = [c2(1), c2];
+c2 = [c2(1), c2];g
 
 D1 = 3;
 D2 = 4;
@@ -38,8 +44,6 @@ alpha2(2,:) = 0.5 + 0.4*t.^2;
 alpha2(3,:) = 0.4 + 0.5*tanh(t-0.5);
 alpha2(4,:) = 0.3 + 0.4*cos(2*pi*4*t);
 
-%e1 = [1 2];
-%e2 = [1 2 3 4];
 e1 = [1 2.005, 3.003];
 e2 = [1 2.002 3.002 3.998];
 
@@ -99,7 +103,7 @@ for i=1:length(SNRs)
         [F, sF] = STFT_Gauss(s,N,1e-4,fmax);
         c1_est = ridge_ext(F,0.1,0.1,10,10);
 
-        [A1_est,phi1_est] = extract_fundamentals(F,sF,c1_est,b);
+        [A1_est,phi1_est] = extract_harmonics(F,sF,c1_est,b,b,1);
 
         r1_est = order_opt(s,40,A1_est,phi1_est,{'Wang'},vc);
 
@@ -111,13 +115,13 @@ for i=1:length(SNRs)
         v1_est = ((C1_est'*C1_est)\C1_est')*s';
 
         Np = 0.15*N;
-        s_ext = extend_fwbw(s,phi1_est,3,Np);
+        s_ext = extendSig(s,phi1_est,3,Np,'fw-bw');
         Next = length(s_ext);
 
         [Fext, sFext] = STFT_Gauss(s_ext,Next,sigma,fmax);
 
         c1ext = ridge_ext(Fext,0.1,0.1,10,10);
-        [A1_ext,phi1_ext] = extract_fundamentals(Fext,sFext,c1ext,b);
+        [A1_ext,phi1_ext] = extract_harmonics(Fext,sFext,c1ext,b,b,1);
 
         C1_ext = construct_dct(A1_ext,phi1_ext,r1_est);
         v1_ext = ((C1_ext'*C1_ext)\C1_ext')*s_ext;
@@ -141,7 +145,7 @@ for i=1:length(SNRs)
         [Fr_ext, sFr_ext] = STFT_Gauss(sr_ext,Next,sigma,fmax);
 
         c2ext = ridge_ext(Fr_ext,0.1,0.1,10,10);
-        [A2_ext,phi2_ext] = extract_fundamentals(Fr_ext,sFr_ext,c2ext,b);
+        [A2_ext,phi2_ext] = extract_harmonics(Fr_ext,sFr_ext,c2ext,b,b,1);
 
         r2_est = order_opt(sr_ext,40,A2_ext,phi2_ext,{'Wang'},vc);
         

@@ -1,4 +1,9 @@
+% This experiment implements that synthetic signal denoising experiment
+% detailed in Sec. 4.2 of "Fully Adaptive Time-Varying
+% Wave-Shape Model: Applications in Biomedical Signal Processing".
 
+addpath(genpath('/time-frequency-analysis'))
+addpath(genpath('/auxiliary-functions'))
 mInterp = 'pchip';
 
 fs = 2000;
@@ -94,7 +99,7 @@ for i=1:size(B2,1)
                 r_max = floor(0.5*N/max(c));
                 
                 
-                [A_est, phi_est] = extract_fundamentals(F,sF,c,b);
+                [A_est, phi_est] = extract_harmonics(F,sF,c,b,b,1);
                 
                 r_opt = order_opt(s',r_max,A_est,phi_est,Crit,Cparams,F);
                                 
@@ -110,7 +115,7 @@ for i=1:size(B2,1)
                 nv = 0;
 
 
-                vnv = nnodes(nv,r_opt,Fn,sFn,c,b,fs,0.9);      
+                vnv = NNodes(nv,r_opt,Fn,sFn,c,b,fs,0.9);      
                 
                                                 
                 cycls = 3;
@@ -123,7 +128,7 @@ for i=1:size(B2,1)
                 [Fext,sFext] = STFT_Gauss(s_ext,Next,sigma,fmax);
                 cext = ridge_ext(Fext,0.1,0.1,10,10);
                 be = round(3/pi*sqrt(sigma/2)*Next);
-                [A_ext,phi_ext] = extract_fundamentals(Fext,sFext,cext,be);
+                [A_ext,phi_ext] = extract_harmonics(Fext,sFext,cext,be,be,1);
                                 
                 C = construct_dct(A_ext,phi_ext,r_opt);
                 ve = ((C'*C)\C')*s_ext;
@@ -194,7 +199,7 @@ for i=1:size(B2,1)
                 T_samd(k) = t_samd;
                 T_tvWSE(k) = t_tvwse;
                 Signals(k,:) = s;
-                S_tvWSE(k,:) = s_tvWSE;
+                S_tvWSE(k,:) = s_tvwse;
                 S_LR(k,:) = s_lr;
                 S_SAMD(k,:) = s_samd;
                 S_Hard(k,:) = s_hard;
