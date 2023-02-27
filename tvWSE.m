@@ -1,4 +1,33 @@
-function [x, v_e,exitflag] = tvWSE(f,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,outn,options)
+function [x_r, v_e,exitflag] = tvWSE(x,A,phi,D,vnv,vh,mInterp,lb,ub,method,ext,outn,options)
+%% This function implements the adaptive time-varying wave-shape extraction (tvWSE) Algorithm
+% detailed in Ruiz, J, et al. "Fully Adaptive Time-Varying Wave-Shape
+% Model: Applications in Biomedical Signal Processing". 
+% Inputs:
+%         - x: Input Signal x.
+%         - A: Amplitude Modulation (AM) of x.
+%         - phi: phase modulation of x.
+%         - D: number of harmonic components of the time-varying WSF.
+%         - vnv: number of nodes per harmonic amplitude function.
+%         - vh: initial coefficient vector.
+%         - mInterp: Interpolation method for harmonic amplitude functions.
+%         - lb: Lower bound for the coefficients in the lsqcurvefit algorithm.
+%         - up: upper bound of the coefficients in the lsqcurvefit algorithm.
+%         - method: Nonlinear regressiong algorithm. If == 0, statistical               
+%                   non-linear curve fitting is performed. If ==1, least-square
+%                   regression curve fitting is performed.
+%         - ext: Indicates if the input signals has been extended.
+%         - outn: Number of outer nodes in the harmonic amplitudes. Used
+%                 when the signal is previously extended
+%         - options: struct with optimization options for the curve fitting
+%                    algorithms.
+% Outputs:
+%         - x_r: reconstructed signal obtained using the optimal
+%         time-varying wave-shape coefficient vector.
+%         - v_e: optimal time-varying wave-shape coefficient vector.
+%         - exitflag: return the algorithm stop criterion for the curve
+%                      fitting algorithm. See https://www.mathworks.com/help/optim/ug/lsqcurvefit.html
+%                      for more details.
+
 if nargin<11
     ext = 0;
 end
@@ -23,17 +52,17 @@ end
 warning('off')
 if method == 0
     fprintf('Using nlinfit...\n')
-    v_e = nlinfit([A;phi],f,modelfun,v0,options);
+    v_e = nlinfit([A;phi],x,modelfun,v0,options);
 else
     if method == 1
         fprintf('Using lsqcurvefit...\n')
-        [v_e,~,~,exitflag] = lsqcurvefit(modelfun,v0,[A;phi],f,lb,ub,options);
+        [v_e,~,~,exitflag] = lsqcurvefit(modelfun,v0,[A;phi],x,lb,ub,options);
     end
 end
 warning('on')
 
 
-x = modelfun(v_e,X);
+x_r = modelfun(v_e,X);
 end
 function s = regresion_reform(v,X,D,vnv,mInterp)
 I = length(D);
