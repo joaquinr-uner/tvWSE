@@ -1,8 +1,8 @@
 % This Script generates Figs. 9 and 10 from the paper "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing"
 
-addpath(genpath('/time-frequency-analysis'))
-addpath(genpath('/auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
+addpath(genpath('auxiliary-functions'))
 
 load('cu03m.mat')
 st=1.12e5;
@@ -94,7 +94,7 @@ fprintf('Computing tvWSE on extended signal using %s. Nro of coefs : %i \n',meth
 
 tic;
 [s_tvwse_n,v_ie,eflag_tvwse] = tvWSE(sen',ones(1,Next),phi_ext,r_opt,vnv,vh,method,lb,ub,1,1,1);
-t_tvwse = toc;
+t_tvwse = toc
 
 se_tvwse = v(1)*A_ext.*s_tvwse_n;
 

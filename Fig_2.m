@@ -1,8 +1,8 @@
 % This Script generates Fig. 2 from the paper "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing"
 
-addpath('auxiliary-functions')
-addpath('time-frequency-analysis')
+addpath(genpath('auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
 
 mInterp = 'pchip';
 ext = 1;
@@ -118,7 +118,7 @@ se_tvwse = B1e.*se_tvwse;
 t_tvwse = toc;
 %% Posprocessing
 [ti,ql,gamh,eh] = parse_coefs(Next,v_ie,D,vnv,0);
-[a,~,Ale,alp] = compute_haf(ti,ql,gamh,'pchip',1,B1e);
+[a,~,Ale,alp] = compute_hafs(ti,ql,gamh,'pchip',1,B1e);
 s_lr = se_lr(Np+1:Next-Np);
 s_samd = se_samd(Np+1:Next-Np);
 s_tvwse = se_tvwse(Np+1:Next-Np);

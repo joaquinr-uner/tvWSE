@@ -1,8 +1,8 @@
 % This Script generates Fig. 8 from the paper "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing"
 
-addpath(genpath('/time-frequency-analysis'))
-addpath(genpath('/auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
+addpath(genpath('auxiliary-functions'))
 
 %% Data Loading
 x = load('2869156_Resp(32).txt');
@@ -271,7 +271,7 @@ ecg = ecg - mean(ecg);
 sc_tvwse = s_tvwse + s2_tvwse;
 sc_samd = f1_est_NLR + f2_est_NLR;
 
-%%
+%% Graphics
 
 tin = 185;
 tend = 205;
