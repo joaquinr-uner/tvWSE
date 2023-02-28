@@ -1,8 +1,9 @@
 % This experiment implements that synthetic signal segmentation experiment
 % detailed in Sec. 4.4 of "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing".
-addpath(genpath('/time-frequency-analysis'))
-addpath(genpath('/auxiliary-functions'))
+
+addpath(genpath('auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
 
 mInterp = 'pchip';
 
@@ -59,7 +60,7 @@ for m=1:length(SNRs)
     ACoefs = zeros(Nr,6);
     Nodes = cell(Nr,1);
     fprintf(['Segmentation of time-varying waveshapes with SNR_in = ' num2str(SNR) '...\n'])
-    parfor k=1:Nr
+    for k=1:Nr
         D = 2 + randi(4,[1,1]);
         t_t = round(0.1*N + randi(0.8*N,[1,1]));
         alpha = zeros(6,N);

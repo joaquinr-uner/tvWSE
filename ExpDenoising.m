@@ -2,8 +2,8 @@
 % detailed in Sec. 4.2 of "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing".
 
-addpath(genpath('/time-frequency-analysis'))
-addpath(genpath('/auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
+addpath(genpath('auxiliary-functions'))
 mInterp = 'pchip';
 
 fs = 2000;
@@ -87,7 +87,7 @@ for i=1:size(B2,1)
         for m=1:length(SNRs)
             SNR = SNRs(m);
             fprintf(['Denoising of time-varying waveshapes with B2 = ' B2labs{i} ' and B3 = ' B3labs{i} '. SNR_in = ' num2str(SNR) '...\n'])
-            parfor k=1:Nr
+            for k=1:Nr
                 
                 r = 10^(-SNR/20)*std(s_c)*randn(size(s_c));
                 
@@ -119,7 +119,7 @@ for i=1:size(B2,1)
                 
                                                 
                 cycls = 3;
-                s_ext = extend_fwbw(s,phi_est,cycls,Np);        
+                s_ext = extendSig(s,phi_est,cycls,Np,'fw-bw');        
                 Next = N+2*Np;
                 text = 0:1/fs:Next/fs-1/fs;
                 fext = 0:fs/Next:fs*fmax-fs/Next;

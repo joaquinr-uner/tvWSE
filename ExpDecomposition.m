@@ -2,8 +2,8 @@
 % detailed in Sec. 4.3 of "Fully Adaptive Time-Varying
 % Wave-Shape Model: Applications in Biomedical Signal Processing".
 
-addpath(genpath('/time-frequency-analysis'))
-addpath(genpath('/auxiliary-functions'))
+addpath(genpath('time-frequency-analysis'))
+addpath(genpath('auxiliary-functions'))
 
 fs = 2000;
 N = 2000;
@@ -21,7 +21,7 @@ phi2 = 100*t + 7*t.^2;
 c1 = round(diff(phi1)*fs)+1;
 c2 = round(diff(phi2)*fs)+1;
 c1 = [c1(1), c1];
-c2 = [c2(1), c2];g
+c2 = [c2(1), c2];
 
 D1 = 3;
 D2 = 4;
@@ -92,7 +92,7 @@ for i=1:length(SNRs)
     S2tvWSE = zeros(Nr,N);
     
     vc = [6,8,10];
-    parfor j=1:Nr
+    for j=1:Nr
         r = 10^(-SNR/20)*std(s_c)*randn(size(s_c));
 
         snr1 = 20*log10(std(s1)/std(r));
@@ -171,7 +171,7 @@ for i=1:length(SNRs)
         s1_lr_ext = C1_ext*v1_ext;
         s2_lr_ext = C2_ext*v2_ext;
 
-        [s_ext_samd,modes_ext_samd] = SAMD(s_ext',[A1_ext;A2_ext],[phi1_ext*2*pi;phi2_ext*2*pi],[r1_est,r2_est],1);
+        [s_ext_samd,modes_ext_samd] = my_SAMD(s_ext',[A1_ext;A2_ext],[phi1_ext*2*pi;phi2_ext*2*pi],[r1_est,r2_est],1);
 
         [ti2,alpi2,gamh2,eh2] = parse_coefs(Next,v_ie2_ext,r2_est,vnv2,0);
 
