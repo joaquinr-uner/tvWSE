@@ -1,4 +1,4 @@
-function [sigma, b] = compute_sigma(x,fhmode)
+function [sigma, fh, b] = compute_sigma(x,fhmode)
 %% 
 % Window parameter sigma automatic estimation from the power spectrum of
 % signal x
@@ -11,6 +11,8 @@ function [sigma, b] = compute_sigma(x,fhmode)
 %               cesptrum.
 % Outputs:
 %         sigma: window parameter sigma
+%         fh: estimated signal dominant frequency
+%         b: window half-support in frequency domain
 
 if nargin<2
     fhmode = 1;
@@ -25,13 +27,17 @@ switch fhmode
     case 1
         % fh as peak of the power spectrum
         [~,indf] = max(abs(X).^2);
-
-        fh = indf+1;
+        
+        if mod(N,2)
+            fh = indf;
+        else
+            fh = indf-1;
+        end
     case 2
         % fh as inverse of fundamental period from complex cepstrum
-        C = cceps(x);
-        [~,idth] = max(C(floor(0.2*N):length(X)));
-        th = idth+floor(0.2*N);
+        C = real(ifft(log(abs(fft(x)).^2)));
+        [~,idth] = max(C(50:length(X)));
+        th = idth+50;
         fh = round(1/th*N);
     otherwise
         fprintf('Error during fh estimation')
