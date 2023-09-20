@@ -50,7 +50,7 @@ for i=1:length(criteria)
                     sigma = params.sigma;
                 else
                     if ~isempty(F)
-                        sigma = median(abs(real(F(:))))/0.6745;
+                        sigma = sqrt(2)*median(abs(real(F(:))))/0.6745;
                     else
                         fprintf('STFT Needed')
                     end
