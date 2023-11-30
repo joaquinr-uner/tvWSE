@@ -27,11 +27,13 @@ for p=1:P
    [~,C(p,v_t(p)-1)] = max(abs(F(:,v_t(p)-1)).^2);
    
    for i=v_t(p)+1:N
-   I = C(p,i-1)-e:C(p,i-1)+e;
+   low = max(1,C(p,i-1)-e);
+   upp = min(K,C(p,i-1)+e);
+   I = low:upp;
    I(I<1) = 1;
    I(I>K) = K;
    [Fun_aux,aux] = max(abs(F(I,i)).^2 - a*(I'-C(p,i-1)).^2 - b*(I' - 2*C(p,i-1) + C(p,i-2)).^2);
-   C(p,i) = aux + C(p,i-1) - e;
+   C(p,i) = aux + low;
    if (C(p,i)<1)
        C(p,i)=1;
    end
@@ -42,11 +44,13 @@ for p=1:P
    end
    
    for i=v_t(p)-1:-1:1
-       I = C(p,i+1)-e:C(p,i+1)+e;
+       low = max(1,C(p,i+1)-e);
+       upp = min(K,C(p,i+1)+e);
+       I = low:upp;
        I(I<1) = 1;
        I(I>K) = K;
-       [~,aux] = max(abs(F(I,i)).^2 - a*(I'-C(p,i+1)).^2 - b*(I' - 2*C(p,i+1) + C(p,i+2)).^2);
-       C(p,i) = aux + C(p,i+1) - e;
+       [Fun_aux,aux] = max(abs(F(I,i)).^2 - a*(I'-C(p,i+1)).^2 - b*(I' - 2*C(p,i+1) + C(p,i+2)).^2);
+       C(p,i) = aux + low;
        if (C(p,i)<1)
            C(p,i)=1;
        end

@@ -1,4 +1,4 @@
-function [vnv,alp] = nnodes(nv,D,F,sF,c,del,fs,thr)
+function [vnv,alp] = NNodes(nv,D,F,sF,c,del,fs,thr)
 %% Automatic node number estimation based on harmonic amplitude bandwidth.
 % Inputs: 
 % 	  - nv: Number of nodes. If nv == 0, adaptive number of nodes for each harmonic is computed.

@@ -103,6 +103,7 @@ vn = ((Cn'*Cn)\Cn')*se_norm';
 [Fen,sFen] = STFT_Gauss(se_norm,Next,sigma,fmax);
 
 %% Algorithm Initialization
+%vn = zeros(1,length(vn));
 vh = Init_tvWSE(vn,vnv,D,1,N,Next,0,outn);
 [lb,ub] = create_bounds(vnv,vh,D,Next,outn);
 
@@ -117,7 +118,7 @@ se_tvwse = B1e.*se_tvwse;
 
 t_tvwse = toc;
 %% Posprocessing
-[ti,ql,gamh,eh] = parse_coefs(Next,v_ie,D,vnv,0);
+[ti,ql,gamh,eh] = parse_coefs(Next,v_ie,D,vnv,0,1);
 [a,~,Ale,alp] = compute_hafs(ti,ql,gamh,'pchip',1,B1e);
 s_lr = se_lr(Np+1:Next-Np);
 s_samd = se_samd(Np+1:Next-Np);

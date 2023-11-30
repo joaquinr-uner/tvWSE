@@ -1,4 +1,4 @@
-function [a, b, Q, q] = compute_ampl_coefs(ti,alp,gamh,mInterp,nmn,B1)
+function [a, b, Q, q] = compute_hafs(ti,alp,gamh,mInterp,nmn,B1)
 %% Compute harmonic amplitude functions and coefficients.
 % Perform normalization if necessary.
 % Inputs:
