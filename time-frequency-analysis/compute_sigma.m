@@ -1,4 +1,4 @@
-function [sigma, b] = compute_sigma(x,fhmode)
+function [sigma, fh, b] = compute_sigma(x,fhmode)
 %% 
 % Window parameter sigma automatic estimation from the power spectrum of
 % signal x
@@ -11,6 +11,8 @@ function [sigma, b] = compute_sigma(x,fhmode)
 %               cesptrum.
 % Outputs:
 %         sigma: window parameter sigma
+%         fh: estimated signal dominant frequency
+%         b: window half-support in frequency domain
 
 if nargin<2
     fhmode = 1;
