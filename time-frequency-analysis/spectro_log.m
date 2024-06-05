@@ -9,6 +9,6 @@ if nargin<3
 else
     imagesc(t,f,log(abs(F).^2)), axis xy
 end
-colormap(1-gray)
+colormap(gray)
 
 end

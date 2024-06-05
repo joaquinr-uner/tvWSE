@@ -161,7 +161,7 @@ inst_freq(1,1:end-1) = N*diff(phi); inst_freq(1,end) = inst_freq(1,end-1);
 tiempo_MMD = toc
 
 %% Compute HAFs
-Next = length(s_ext);
+Next = 1.2*N;
 [ti, alp, gamh, eh] = parse_coefs(Next,v_ie,r_opt,vnv,0);
 [ti,alp] = remove_outn(ti,alp,1);
 [a, b, Q, q] = compute_hafs(ti,alp,gamh,'pchip',1,A);
@@ -281,15 +281,17 @@ scatter(t,s,5,a(2)*Q(1,:),'filled','Marker','o')
 set(gca,'FontSize',14)
 ylim([-750 750])
 xlim([t(1) t(end)])
-ylabel('A.U.')
-title('ECG with ventricular fibrillation event')
+ylabel('U.A.')
+%title('ECG with ventricular fibrillation event')
+title('ECG con evento de fibrilación ventricular')
 %title('ECG Signal with ventricular fibrillation event')
 colorbar 
 subplot(3,1,3)
 fill([t fliplr(t)],[a(2)*Q(1,:)-0.05 fliplr(a(2)*Q(1,:)+0.05)],[a(2)*Q(1,:) fliplr(a(2)*Q(1,:))])
-title('Second Harmonic Amplitude Function')
+%title('Second Harmonic Amplitude Function')
+title('Segunda Función de Amplitud Armónica')
 colorbar
 set(gca,'FontSize',14)
 xlim([t(1) t(end)])
-xlabel('Time [s]')
-ylabel('A.U.')
+xlabel('Tiempo [s]')
+ylabel('U.A.')

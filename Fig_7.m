@@ -22,7 +22,7 @@ sigma = 0.1;
 fmax = 0.05;
 ft = 1/redun:1/redun:round(fmax*N);
 
-[STFT,SST1,SST2] = sstn_test_modL_new(x,gamma,sigma,ft,bt,redun);
+[STFT,SST1,SST2,SST3,SST4,omega,omega2,omega3,omega4,tau2,tau3,phi22p,phi23p,phi24p] = sstn_test_modL_new(x,gamma,sigma,ft,bt,redun);
 
 RTF = SST2;
 d = redun;
@@ -33,28 +33,27 @@ for j = 1:N
     aux(j) = sum(RTF(c1(j)-d:c1(j)+d,j));
     RTF(c1(j)-d:c1(j)+d,j) = 0;
 end;
-A = abs(aux); 
-phi = phase(aux)/(2*pi);
+A1_est = abs(aux); 
+phi1_est = phase(aux);
 
 D1 = 6; 
 
 tic;
-C = [makeC(A,phi,D1)];
+C = [cosenos(A1_est,phi1_est,D1)];
 
-C1_aux = makeC(ones(1,1000),phi(5*fs+1):1/1000:phi(5*fs+1)+1-1/1000,D1);
+C1_aux = cosenos(ones(1,1000),phi1_est(5*fs+1):2*pi/1000:phi1_est(5*fs+1)+2*pi-2*pi/1000,D1);
 
-coef_est = ((C'*C)\C')*x';
-f_est_LR = C*coef_est;
-f1_est_LR = C(:,1:2*D1)*coef_est(1:2*D1);
+coef_est = (x*C')*inv(C*C');
+f_est_LR = coef_est*C;
+f1_est_LR = coef_est(1:2*D1)*C(1:2*D1,:);
 tiempo_LR = toc
 
-WSF1 = C1_aux*coef_est(1:2*D1);
+WSF1 = coef_est(1:2*D1)*C1_aux;
 
 order_Phi = 1; 
 warning('off')
-fprintf('Computing SAMD')
 tic;
-[s_samd,b_e] = one_wsf_nonlinear(x,A,phi*2*pi,D1,order_Phi);
+[s_samd,b_e] = one_wsf_nonlinear(x,A1_est,phi1_est,D1,order_Phi);
 tiempo_NLR = toc
 warning('on')
 
@@ -64,6 +63,7 @@ hold on
 plot(t,s_samd)
 hold off
 %%
+
 opt.maxiter = 10000;
 opt.eps_error = 1e-12;
 opt.show = 0;
@@ -72,14 +72,16 @@ opt.knotremoval_factor= 1.01;
 opt.order = 3;
 opt.eps_diff = opt.eps_error;
     
-ins_pre_phase = [phi];
-ins_amplt = [A];
+ins_pre_phase = [phi1_est]*0.5/pi;
+ins_amplt = [A1_est];
     
 fTrue = cell(1,2);
 numGroup = 1;
 % fff = f1 + f2;
 
 shapeTrue = cell(1,2);
+%         shapeTrue{1} = @(x) sh1(x);
+%         shapeTrue{2} = @(x) sh2(x);
 tic;
 [shapeInLoop,comp,errorRec,SL2Rec,iter,flag] = srcIterRegJC(x,N,numGroup,ins_amplt,ins_pre_phase,opt,fTrue,shapeTrue);
 tiempo_RDBR = toc
@@ -105,15 +107,15 @@ switch opt.shapeMethod
         opt.para.Ls = 1000;
 end
 tic;
-inst_freq = zeros(1,N);
-inst_freq(1,1:end-1) = N*diff(phi)*0.5/pi; inst_freq(1,end) = inst_freq(1,end-1);
+inst_freq = zeros(2,N);
+inst_freq(1,1:end-1) = N*diff(phi1_est)*0.5/pi; inst_freq(1,end) = inst_freq(1,end-1);
 
-[shape,component,Hcoef,flag,idx,iter,iterDR] = DeCom_MMD(x,t,1,[A],inst_freq,[phi],opt);
+[shape,component,Hcoef,flag,idx,iter,iterDR] = DeCom_MMD(x,t,1,[A1_est],inst_freq,[phi1_est]*0.5/pi,opt);
 tiempo_MMD = toc
 %% Extension 
 Np = round(0.1*N);
 
-s_ext = extendSig(x,phi,3,Np,'fw-bw');
+s_ext = extendSig(x,phi1_est/(2*pi),3,Np,'fw-bw');
 
 fprintf('Extension Completed \n')
 
@@ -240,7 +242,8 @@ figure(1);
 set(gcf,'Position',[672 204 1245 758])
 subplot(4,5,1:3);
 plot(t(ind)-t(ind(1)),xi,'k')
-text(0.05,900,'Recording 44; T6-O2 channel','FontSize',11)
+%text(0.05,900,'Recording 44; T6-O2 channel','FontSize',11)
+text(0.05,900,'Registro 4; Canal T6-02','FontSize',11)
 ylim([-600 750])
 xlim([t(1) t(length(ind))])
 set(gca,'FontSize',fntsz)
@@ -251,7 +254,8 @@ plot(t(ind)-t(ind(1)),xi,'k')
 hold on
 plot(t(ind)-t(ind(1)),s_tvwse(ind),'Color',col,'LineWidth',1.5);
 hold off
-text(0.05,580,'Ours','FontSize',12)
+%text(0.05,580,'Ours','FontSize',12)
+text(0.05,580,'Propuesta','FontSize',12)
 ylim([-500 500])
 xlim([t(1) t(length(ind))])
 set(gca,'FontSize',fntsz)
@@ -274,7 +278,8 @@ text(0.05,580,'MMD','FontSize',12)
 hold off
 ylim([-500 500])
 xlim([t(1) t(length(ind))])
-xlabel('Time [s]','FontSize',16)
+%xlabel('Time [s]','FontSize',16)
+xlabel('Tiempo [s]','FontSize',16)
 set(gca,'FontSize',fntsz)
 
 subplot(4,5,9:10)
@@ -306,4 +311,58 @@ xlim([0 Lag])
 xlabel('Lag [s]','FontSize',14)
 text(20,0.85,'Autocorr Res. MMD','FontSize',14)
 hold off
+set(gca,'FontSize',fntsz)
+
+%% Signal Plot w/o Residues
+fntsz = 12;
+xi = x(ind) - mean(x(ind));
+Ni = length(xi);
+del = 1.96/sqrt(Ni);
+tiledlayout(4,1)
+set(gcf,'Position',[672 204 1245 758])
+nexttile
+%subplot(4,1,1);
+plot(t(ind)-t(ind(1)),xi,'k')
+%text(0.05,900,'Recording 44; T6-O2 channel','FontSize',11)
+text(0.05,900,'Registro 44; Canal T6-02','FontSize',11)
+ylim([-600 750])
+xlim([t(1) t(length(ind))])
+set(gca,'FontSize',fntsz)
+
+col = 'c';
+nexttile
+%subplot(4,1,2);
+plot(t(ind)-t(ind(1)),xi,'k')
+hold on
+plot(t(ind)-t(ind(1)),s_tvwse(ind),'Color',col,'LineWidth',1.5);
+hold off
+%text(0.05,580,'Ours','FontSize',12)
+%text(0.05,580,'Propuesta 2','FontSize',12)
+text(0.05,580,'tvWSE','FontSize',12)
+ylim([-500 500])
+xlim([t(1) t(length(ind))])
+set(gca,'FontSize',fntsz)
+
+nexttile
+%subplot(4,1,3);
+plot(t(ind)-t(ind(1)),xi,'k')
+hold on
+plot(t(ind)-t(ind(1)),s_samd(ind),'Color',col,'LineWidth',1.5);
+hold off
+text(0.05,580,'SAMD','FontSize',12)
+ylim([-500 500])
+xlim([t(1) t(length(ind))])
+set(gca,'FontSize',fntsz)
+
+nexttile
+%subplot(4,1,4);
+plot(t(ind)-t(ind(1)),xi,'k')
+hold on
+plot(t(ind)-t(ind(1)),component{1}(ind),'Color',col,'LineWidth',1.5);
+text(0.05,580,'MMD','FontSize',12)
+hold off
+ylim([-500 500])
+xlim([t(1) t(length(ind))])
+%xlabel('Time [s]','FontSize',16)
+xlabel('Tiempo [s]','FontSize',16)
 set(gca,'FontSize',fntsz)
