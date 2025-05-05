@@ -18,6 +18,9 @@ if length(nv) == 1
 else
     vnv = nv;
 end
+if nargin < 6
+    outn=0;
+end
 
 ti = cell(1,D-1);
 alp = cell(1,D-1);
@@ -25,8 +28,8 @@ gam = zeros(1,D-1);
 e = zeros(1,D-1);
 for i=1:D-1
     nv = vnv(i);
-    vi = v(2*sum(vnv(1:i-1))+4*(i-1)+1:2*sum(vnv(1:i))+4*i);
-    t_l = vi(1:vnv(i));
+    vi = v(2*sum(vnv(1:i-1))+4*outn*(i-1)+1:2*sum(vnv(1:i))+4*outn*i);
+    t_l = vi(1:vnv(i)-2+2*outn);
     [t_l, indx_l] = sort(t_l);
     %t_l = round(t_l);
     if t_corr
@@ -49,7 +52,7 @@ for i=1:D-1
         ti{i} = [1 t_l N];
     end
     %ti{i} = t_l;
-    aux = vi(nv+1:2*nv+2);
+    aux = vi(nv-2+2*outn+1:2*nv-2+4*outn);
     aux_in = aux(2:end-1);
     aux(2:end-1) = aux_in(indx_l);
     alp{i} = aux;

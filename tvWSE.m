@@ -42,8 +42,9 @@ else
     end
 end
 
+x = x(:)';
 v0 = vh;
-X = [A;phi];
+X = [A(:)';phi(:)'];
 if ext == 1
     modelfun = @(v,X)(regresion_ext(v,X,D,vnv,mInterp,outn));
 else

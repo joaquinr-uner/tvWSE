@@ -1,4 +1,4 @@
-function [a, Ah] = ampl_estimates2(F,sF,c,del,D,vnv,N,Next)
+function [a, Ah] = ampl_estimates(F,sF,c,del,D,vnv,N,Next)
 K = length(D);
 Ah = zeros(sum(D)-K,Next);
 for k=1:K

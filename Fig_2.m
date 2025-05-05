@@ -25,7 +25,7 @@ alpha = zeros(D,N);
 A = 0.1*sqrt(t+1);
 
 phi = 40*t+5/(2*pi)*sin(2*pi*t);
-
+phip = 40 - 5*cos(2*pi*t);
 alpha(1,:) = ones(1,N);
 alpha(2,:) = 0.5 + 0.25*cos(2*pi*3*t);
 alpha(3,:) = 0.3 + 0.25*cos(2*pi*4*t);
@@ -45,7 +45,7 @@ s_c = A.*s_c;
 
 s_c = s_c - mean(s_c);
 
-s = s_c;
+s = s_c + 10^(-Inf/20)*std(s_c)*randn(size(s_c));
 s = s - mean(s);
 
 %% Fundamental Component Estimation
@@ -211,5 +211,61 @@ xlabel('Time [s]')
 ylim([0 0.85])
 set(ax11,'Position',[0.56 0.13 0.35 0.2])
 leg11=legend({'$\alpha_3(t)$','$\hat{\alpha}_3(t)$'},'Interpreter','latex','Orientation','horizontal');
+set(leg11,'Box','off')
+hold off
+
+%% Plot Presentacion Predefensa
+
+
+figure(1)
+tiledlayout(3,2,'TileSpacing','compact')
+set(gcf,'Position',[563, 260, 864, 532])
+nexttile
+plot(t,A)
+text(0.05,0.13,'$A(t)$','Fontsize',18,'interpreter','latex')
+xlabel('Tiempo [s]')
+nexttile
+plot(t,phip)
+text(0.05,42.5,'$\phi''(t)$','Fontsize',18,'interpreter','latex')
+xlabel('Tiempo [s]')
+
+
+nexttile([1,2])
+plot(t,s,'Color',[0.7 0.7 0.7],'LineStyle','--')
+hold on
+plot(t,s_c,'-k')
+plot(t,s_tvwse','-r')
+xlabel('Tiempo [s]')
+ylabel('U.A.')
+ylim([-0.3 0.4])
+leg2=legend('Señal','Propuesta','Orientation','horizontal');
+set(leg2,'Box','off')
+hold off
+
+nexttile
+plot(t,alpha(2,:),'k')
+hold on
+plot(t,a(2)*Al(1,:),'r--')
+ti2 = ceil(t1)-Np;
+ti2 = ti2(2:end-1);
+stem(t(round(ti2)),a(2)*alp2(2:end-1),'mo')
+xlabel('Tiempo [s]')
+ylabel('U.A.')
+ylim([0 1.1])
+leg10=legend({'$\alpha_2(t)$','$\hat{\alpha}_2(t)$'},'Interpreter','latex','Orientation','horizontal','FontSize',14);
+set(leg10,'Box','off')
+hold off
+
+nexttile
+plot(t,alpha(3,:),'k')
+hold on
+plot(t,a(3)*Al(2,:),'r--')
+ti3 = ceil(t2)-Np;
+ti3 = ti3(2:end-1);
+stem(t(round(ti3)),a(3)*alp3(2:end-1),'mo')
+xlabel('Tiempo [s]')
+ylabel('U.A.')
+ylim([0 0.85])
+leg11=legend({'$\alpha_3(t)$','$\hat{\alpha}_3(t)$'},'Interpreter','latex','Orientation','horizontal','FontSize',14);
 set(leg11,'Box','off')
 hold off

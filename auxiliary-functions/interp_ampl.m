@@ -17,7 +17,7 @@ A = zeros(L,N);
 
     for i=1:L
         x_l = ti{i};
-        y_l = aalp{i};
+        y_l = alp{i};
         A(i,:) = interp1(x_l,y_l,1:N,mInterp);
     end
 end
