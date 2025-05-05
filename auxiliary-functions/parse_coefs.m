@@ -18,6 +18,9 @@ if length(nv) == 1
 else
     vnv = nv;
 end
+if nargin < 6
+    outn=0;
+end
 
 ti = cell(1,D-1);
 alp = cell(1,D-1);

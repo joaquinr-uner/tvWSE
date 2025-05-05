@@ -30,10 +30,14 @@ spfw = [];
 spbk = [];
 if sum(ismember(msplt,'fw'))
     indfw = find(phi>phi(end)-c,1);
-    Seas1 = round(median(pw(end-c+1:end)));
+    if length(pw)>c
+        Seas1 = round(median(pw(end-c+1:end)));
+    else
+        Seas1 = round(median(pw));
+    end
     estInd = (indfw:N)';
     if length(estInd)<Seas1+c %Check if enough samples are used for estimation
-        estInd = N-Seas1-c-1:N;
+        estInd = [max(1,N-2*Seas1-c-1):N]';
     end
 
     Mdlfw = regARIMA('D',0,'Seasonality',Seas1,'MALags',c,'SMALags',Seas1,'Intercept',0);
@@ -44,11 +48,15 @@ end
 
 if sum(ismember(msplt,'bw'))
     indbk = find(phi>phi(1)+c,1);
-    Seas2 = round(median(pw(1:c)));
+    if length(pw)>c
+        Seas2 = round(median(pw(1:c)));
+    else
+        Seas2 = round(median(pw));
+    end
     sbk = flipud(s);
     estIndbk = (N-indbk+1:N)';
     if length(estIndbk)<Seas2+c %Check if enough samples are used for estimation
-        estIndbk = N-Seas2-c-1:N;
+        estIndbk = [max(1,N-2*Seas2-c-1):N]';
     end
 
     Mdlbk = regARIMA('D',0,'Seasonality',Seas2,'MALags',c,'SMALags',Seas2,'Intercept',0);
